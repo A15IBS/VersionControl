@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,8 @@ namespace UserMaintenance
             listUsers.DataSource = users;
             listUsers.ValueMember = "ID";
             listUsers.DisplayMember = "FullName";
+
+            btnSave.Text = Resource1.Save;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -33,6 +36,26 @@ namespace UserMaintenance
                 
             };
             users.Add(u);
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                using (StreamWriter sw = new StreamWriter(sfd.FileName))
+                {
+                    sw.Write("ID - TeljesNév");
+                    sw.WriteLine();
+                    foreach (var item in users)
+                    {
+                        sw.Write(item.ID);
+                        sw.Write(" - ");
+                        sw.Write(item.FullName);
+                        sw.WriteLine();
+                    }
+                }
+            }
         }
     }
 }
